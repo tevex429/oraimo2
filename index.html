@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+<title>ORAIMO · 70% Pre-Pay Store</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+/* ---------- ORAIMO BRAND PALETTE (from Brandfetch) ---------- */
+:root {
+  --oraimo-chartreuse: #82E600;
+  --oraimo-submarine: #BCCCCC;
+  --oraimo-elm: #177F85;
+  --oraimo-dark: #1e2b2d;
+  --oraimo-ink: #0f1a1c;
+  --oraimo-bg: #f6f9fa;
+  --oraimo-card: #ffffff;
+  --oraimo-muted: #6b7c7e;
+  --oraimo-border: #e2eaea;
+  --oraimo-danger: #d64545;
+  --oraimo-warning: #e6a817;
+  --radius: 18px;
+  --radius-pill: 50px;
+  --shadow-sm: 0 4px 14px rgba(0,30,35,0.05);
+  --shadow-md: 0 12px 28px rgba(0,30,35,0.08);
+  --shadow-lg: 0 24px 48px rgba(0,30,35,0.12);
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: var(--font);
+  background: var(--oraimo-bg);
+  color: var(--oraimo-dark);
+  line-height: 1.5;
+  padding: 1rem;
+  min-height: 100vh;
+}
+.container { max-width: 1280px; margin: 0 auto; }
+
+/* ---------- TOP BAR ---------- */
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--oraimo-card); border-radius: var(--radius-pill);
+  padding: 0.6rem 1.2rem; box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.8rem;
+}
+.brand { display: flex; align-items: center; gap: 0.6rem; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px; }
+.brand-icon {
+  background: var(--oraimo-chartreuse); color: var(--oraimo-ink);
+  width: 44px; height: 44px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 900;
+}
+.brand span { color: var(--oraimo-elm); }
+.badge-prepay {
+  background: var(--oraimo-chartreuse); color: var(--oraimo-ink);
+  font-size: 0.7rem; font-weight: 700; padding: 0.3rem 0.9rem;
+  border-radius: var(--radius-pill); text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.nav-actions { display: flex; align-items: center; gap: 0.8rem; }
+.btn-icon {
+  background: var(--oraimo-bg); border: none; width: 46px; height: 46px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; color: var(--oraimo-dark); cursor: pointer;
+  transition: 0.2s; position: relative;
+}
+.btn-icon:hover { background: var(--oraimo-submarine); }
+.cart-badge {
+  position: absolute; top: -4px; right: -4px; background: var(--oraimo-elm);
+  color: white; font-size: 0.65rem; font-weight: 700; width: 20px; height: 20px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 2px solid white;
+}
+.btn-admin {
+  background: var(--oraimo-dark); color: white; border: none;
+  padding: 0.6rem 1.2rem; border-radius: var(--radius-pill);
+  font-weight: 600; font-size: 0.85rem; cursor: pointer;
+  display: flex; align-items: center; gap: 0.5rem; transition: 0.2s;
+}
+.btn-admin:hover { background: var(--oraimo-elm); }
+
+/* ---------- PROMO STRIP ---------- */
+.promo-strip {
+  background: linear-gradient(110deg, var(--oraimo-elm) 0%, #0f5c60 100%);
+  border-radius: var(--radius); padding: 1.2rem 1.8rem;
+  margin-bottom: 2rem; display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between; color: white;
+}
+.promo-strip h1 { font-size: 1.5rem; font-weight: 700; }
+.promo-strip h1 i { color: var(--oraimo-chartreuse); margin-right: 0.4rem; }
+.promo-strip p { font-size: 0.9rem; opacity: 0.9; margin-top: 0.2rem; }
+.promo-tag {
+  background: var(--oraimo-chartreuse); color: var(--oraimo-ink);
+  font-weight: 800; padding: 0.5rem 1.2rem; border-radius: var(--radius-pill);
+  font-size: 0.95rem; white-space: nowrap;
+}
+
+/* ---------- SECTION TITLE ---------- */
+.section-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.5rem;
+}
+.section-head h2 { font-size: 1.5rem; font-weight: 700; }
+.section-head .hint {
+  font-size: 0.8rem; color: var(--oraimo-muted);
+  background: white; padding: 0.3rem 1rem; border-radius: var(--radius-pill);
+}
+
+/* ---------- PRODUCT GRID ---------- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.2rem;
+}
+.product-card {
+  background: var(--oraimo-card); border-radius: var(--radius);
+  padding: 1.2rem; box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column;
+  transition: 0.25s; border: 1px solid transparent;
+}
+.product-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--oraimo-submarine); }
+.product-visual {
+  background: #edf3f3; border-radius: 14px; height: 140px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3.2rem; color: var(--oraimo-elm); margin-bottom: 0.9rem;
+}
+.product-name { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.15rem; }
+.product-sub { font-size: 0.75rem; color: var(--oraimo-muted); margin-bottom: 0.7rem; }
+.price-row { margin-top: auto; }
+.price-original { font-size: 0.8rem; color: #99a8aa; text-decoration: line-through; }
+.price-prepay {
+  font-size: 1.4rem; font-weight: 800; color: var(--oraimo-elm);
+  display: flex; align-items: baseline; gap: 0.3rem;
+}
+.price-prepay small { font-size: 0.75rem; font-weight: 600; color: var(--oraimo-muted); }
+.prepay-note {
+  font-size: 0.7rem; background: #edf6f0; color: #2a6b4a;
+  padding: 0.2rem 0.7rem; border-radius: var(--radius-pill);
+  display: inline-block; margin: 0.4rem 0 0.8rem; font-weight: 600;
+}
+.btn-add {
+  background: var(--oraimo-dark); color: white; border: none;
+  padding: 0.7rem; border-radius: var(--radius-pill);
+  font-weight: 600; font-size: 0.85rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  transition: 0.2s; width: 100%;
+}
+.btn-add:hover { background: var(--oraimo-elm); }
+
+/* ---------- MODAL (shared) ---------- */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(10,25,28,0.5);
+  backdrop-filter: blur(4px); display: flex; align-items: center;
+  justify-content: center; opacity: 0; visibility: hidden;
+  transition: 0.2s; z-index: 1000; padding: 1rem;
+}
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-box {
+  background: white; border-radius: 24px; padding: 1.8rem;
+  max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto;
+  box-shadow: var(--shadow-lg); transform: translateY(12px); transition: 0.2s;
+}
+.modal-overlay.active .modal-box { transform: translateY(0); }
+.modal-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1.2rem;
+}
+.modal-head h3 { font-size: 1.3rem; font-weight: 700; }
+.modal-close { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #aaa; line-height: 1; }
+.modal-close:hover { color: var(--oraimo-danger); }
+
+/* ---------- CART / CHECKOUT ---------- */
+.cart-list { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1.2rem; max-height: 240px; overflow-y: auto; }
+.cart-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 0.6rem; border-bottom: 1px solid var(--oraimo-border);
+}
+.cart-row-info { display: flex; flex-direction: column; }
+.cart-row-name { font-weight: 600; font-size: 0.9rem; }
+.cart-row-price { font-size: 0.8rem; color: var(--oraimo-elm); font-weight: 600; }
+.cart-remove { background: none; border: none; color: #ccc; cursor: pointer; font-size: 0.9rem; }
+.cart-remove:hover { color: var(--oraimo-danger); }
+.cart-total-row {
+  display: flex; justify-content: space-between; font-weight: 700;
+  font-size: 1.15rem; padding: 0.8rem 0; border-top: 2px dashed var(--oraimo-border);
+  margin-bottom: 1.2rem;
+}
+.cart-total-row span:last-child { color: var(--oraimo-elm); }
+.btn-primary {
+  background: var(--oraimo-chartreuse); color: var(--oraimo-ink);
+  border: none; padding: 0.9rem; width: 100%; border-radius: var(--radius-pill);
+  font-weight: 700; font-size: 0.95rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  transition: 0.2s;
+}
+.btn-primary:hover { background: #6ec400; box-shadow: 0 6px 16px rgba(130,230,0,0.35); }
+.empty-msg { text-align: center; color: var(--oraimo-muted); padding: 2rem 0; font-size: 0.9rem; }
+
+/* ---------- ADMIN PANEL ---------- */
+.admin-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+.admin-tab {
+  padding: 0.5rem 1.2rem; border-radius: var(--radius-pill);
+  border: 1px solid var(--oraimo-border); background: white;
+  font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.2s;
+}
+.admin-tab.active { background: var(--oraimo-dark); color: white; border-color: var(--oraimo-dark); }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.admin-table th {
+  text-align: left; padding: 0.6rem 0.4rem; border-bottom: 2px solid var(--oraimo-border);
+  font-weight: 700; color: var(--oraimo-muted); font-size: 0.75rem; text-transform: uppercase;
+}
+.admin-table td { padding: 0.6rem 0.4rem; border-bottom: 1px solid var(--oraimo-border); vertical-align: middle; }
+.admin-table input[type="text"], .admin-table input[type="number"] {
+  width: 100%; padding: 0.4rem 0.5rem; border: 1px solid var(--oraimo-border);
+  border-radius: 8px; font-size: 0.85rem; font-family: var(--font);
+}
+.admin-table input:focus { outline: 2px solid var(--oraimo-chartreuse); border-color: transparent; }
+.btn-sm {
+  padding: 0.3rem 0.7rem; border-radius: var(--radius-pill); border: none;
+  font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.2s;
+}
+.btn-sm.save { background: var(--oraimo-chartreuse); color: var(--oraimo-ink); }
+.btn-sm.danger { background: #fde8e8; color: var(--oraimo-danger); }
+.btn-sm.danger:hover { background: var(--oraimo-danger); color: white; }
+.btn-sm.primary { background: var(--oraimo-elm); color: white; }
+.btn-sm.primary:hover { background: #0e5e63; }
+.form-row { display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.form-row input { flex: 1; min-width: 120px; padding: 0.6rem 0.8rem; border: 1px solid var(--oraimo-border); border-radius: 10px; font-size: 0.9rem; font-family: var(--font); }
+.form-row input:focus { outline: 2px solid var(--oraimo-chartreuse); border-color: transparent; }
+.form-row button { padding: 0.6rem 1.4rem; border-radius: var(--radius-pill); border: none; background: var(--oraimo-dark); color: white; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.form-row button:hover { background: var(--oraimo-elm); }
+.status-pill {
+  padding: 0.2rem 0.7rem; border-radius: var(--radius-pill);
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+}
+.status-pending { background: #fff3cd; color: #856404; }
+.status-confirmed { background: #d1ecf1; color: #0c5460; }
+.status-delivered { background: #d4edda; color: #155724; }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 640px) {
+  body { padding: 0.7rem; }
+  .topbar { padding: 0.5rem 0.9rem; }
+  .brand { font-size: 1.3rem; }
+  .brand-icon { width: 36px; height: 36px; font-size: 1.2rem; border-radius: 10px; }
+  .promo-strip { padding: 1rem 1.2rem; }
+  .promo-strip h1 { font-size: 1.2rem; }
+  .product-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.9rem; }
+  .product-visual { height: 110px; font-size: 2.5rem; }
+  .price-prepay { font-size: 1.2rem; }
+  .modal-box { padding: 1.3rem; }
+  .admin-table { font-size: 0.75rem; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-icon"><i class="fas fa-bolt"></i></div>
+      <div><span>oraimo</span></div>
+      <div class="badge-prepay">70% pre‑pay</div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-icon" id="cartBtn"><i class="fas fa-shopping-bag"></i><span class="cart-badge" id="cartBadge">0</span></button>
+      <button class="btn-admin" id="adminBtn"><i class="fas fa-cog"></i> Admin</button>
+    </div>
+  </div>
+
+  <!-- PROMO STRIP -->
+  <div class="promo-strip">
+    <div>
+      <h1><i class="fas fa-mobile-alt"></i> Pay only 70% now</h1>
+      <p>Official ORAIMO products · Pay 70% before delivery, rest on arrival.</p>
+    </div>
+    <div class="promo-tag"><i class="fas fa-tag"></i> 70% off original</div>
+  </div>
+
+  <!-- STOREFRONT -->
+  <div id="storefrontView">
+    <div class="section-head">
+      <h2>oraimo collection</h2>
+      <span class="hint"><i class="fas fa-shield-alt"></i> 70% pre‑order price shown</span>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+
+  <!-- ADMIN VIEW (hidden by default) -->
+  <div id="adminView" style="display:none;">
+    <div class="section-head">
+      <h2><i class="fas fa-cog" style="color:var(--oraimo-elm);"></i> Admin Dashboard</h2>
+      <button class="btn-sm primary" id="backToStoreBtn"><i class="fas fa-store"></i> Back to Store</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="products">Products</button>
+      <button class="admin-tab" data-tab="orders">Orders</button>
+    </div>
+
+    <!-- Products Tab -->
+    <div id="adminProductsTab">
+      <div class="form-row">
+        <input type="text" id="newProdName" placeholder="Product name (e.g. SpaceBuds Pro)">
+        <input type="number" id="newProdPrice" placeholder="Original price ($)" step="0.01" min="0">
+        <input type="text" id="newProdIcon" placeholder="Icon class (fa-headphones)" value="fa-headphones">
+        <button id="addProductBtn"><i class="fas fa-plus"></i> Add</button>
+      </div>
+      <table class="admin-table">
+        <thead><tr><th>Name</th><th>Original Price</th><th>Pre‑pay (70%)</th><th>Icon</th><th>Actions</th></tr></thead>
+        <tbody id="adminProductsBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Orders Tab -->
+    <div id="adminOrdersTab" style="display:none;">
+      <table class="admin-table">
+        <thead><tr><th>Date</th><th>Items</th><th>70% Paid</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody id="adminOrdersBody"></tbody>
+      </table>
+      <p style="font-size:0.8rem; color:var(--oraimo-muted); margin-top:1rem;"><i class="fas fa-info-circle"></i> Orders are created when customers check out. Update status to track fulfillment.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- CART MODAL -->
+<div class="modal-overlay" id="cartModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3><i class="fas fa-shopping-bag" style="color:var(--oraimo-elm);"></i> Your Cart</h3>
+      <button class="modal-close" id="closeCartModal">&times;</button>
+    </div>
+    <div class="cart-list" id="cartListContainer"></div>
+    <div class="cart-total-row"><span>Total (70% pre‑pay)</span><span id="cartTotalDisplay">$0.00</span></div>
+    <button class="btn-primary" id="checkoutBtn"><i class="fas fa-lock"></i> Pay 70% & Reserve</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ===================== DATA LAYER =====================
+  const STORAGE_PRODUCTS = 'oraimo_products_v2';
+  const STORAGE_ORDERS = 'oraimo_orders_v2';
+  const PREPAY_RATE = 0.7;
+
+  // Default products (real ORAIMO names & realistic USD prices)
+  const DEFAULT_PRODUCTS = [
+    { id: 'p1', name: 'SpaceBuds Pro', originalPrice: 119.90, icon: 'fa-headphones', sub: '50dB ANC · 32h battery' },
+    { id: 'p2', name: 'Watch 7N', originalPrice: 29.00, icon: 'fa-clock', sub: '2.01" TFT · IP68' },
+    { id: 'p3', name: 'PowerJet 130', originalPrice: 715.00, icon: 'fa-battery-full', sub: '27600mAh · 130W' },
+    { id: 'p4', name: 'BoomPop Pro', originalPrice: 182.00, icon: 'fa-headphones', sub: 'ANC · 82h playtime' },
+    { id: 'p5', name: 'Watch 5 Lite', originalPrice: 55.00, icon: 'fa-clock', sub: '2.01" HD · IP68' },
+    { id: 'p6', name: 'SpaceBuds 2', originalPrice: 168.00, icon: 'fa-headphones', sub: 'AI translation · 45h' },
+    { id: 'p7', name: 'OpenSnap', originalPrice: 88.00, icon: 'fa-ear-listen', sub: 'Open-ear · bass boost' },
+    { id: 'p8', name: 'Traveler 15', originalPrice: 45.00, icon: 'fa-battery-full', sub: '15000mAh · fast charge' },
+  ];
+
+  // Load or seed
+  let products = JSON.parse(localStorage.getItem(STORAGE_PRODUCTS));
+  if (!products || !products.length) {
+    products = DEFAULT_PRODUCTS.map(p => ({ ...p, sub: p.sub || '' }));
+    localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(products));
+  }
+  let orders = JSON.parse(localStorage.getItem(STORAGE_ORDERS)) || [];
+
+  // In-memory cart (resets on reload – checkout clears it)
+  let cart = [];
+
+  // ===================== HELPERS =====================
+  function saveProducts() { localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(products)); }
+  function saveOrders() { localStorage.setItem(STORAGE_ORDERS, JSON.stringify(orders)); }
+  function formatMoney(n) { return '$' + parseFloat(n).toFixed(2); }
+  function prepayPrice(original) { return parseFloat((original * PREPAY_RATE).toFixed(2)); }
+  function uid() { return 'p' + Date.now() + Math.random().toString(36).slice(2,6); }
+
+  // ===================== STOREFRONT RENDER =====================
+  const productGrid = document.getElementById('productGrid');
+  const cartBadge = document.getElementById('cartBadge');
+  const cartListContainer = document.getElementById('cartListContainer');
+  const cartTotalDisplay = document.getElementById('cartTotalDisplay');
+
+  function renderStorefront() {
+    if (!productGrid) return;
+    productGrid.innerHTML = products.map(p => {
+      const pre = prepayPrice(p.originalPrice);
+      return `
+        <div class="product-card" data-id="${p.id}">
+          <div class="product-visual"><i class="fas ${p.icon || 'fa-box'}"></i></div>
+          <div class="product-name">${p.name}</div>
+          <div class="product-sub">${p.sub || 'oraimo quality'}</div>
+          <div class="price-row">
+            <div class="price-original">${formatMoney(p.originalPrice)}</div>
+            <div class="price-prepay">${formatMoney(pre)} <small>70%</small></div>
+          </div>
+          <div class="prepay-note"><i class="fas fa-hand-holding-usd"></i> pay now</div>
+          <button class="btn-add" data-id="${p.id}"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+        </div>`;
+    }).join('');
+    // Attach add handlers
+    document.querySelectorAll('.btn-add').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        addToCart(btn.dataset.id);
+      });
+    });
+  }
+
+  function addToCart(productId) {
+    const prod = products.find(p => p.id === productId);
+    if (!prod) return;
+    const existing = cart.find(c => c.productId === productId);
+    if (existing) { existing.qty += 1; }
+    else {
+      cart.push({
+        productId: prod.id,
+        name: prod.name,
+        prepay: prepayPrice(prod.originalPrice),
+        qty: 1
+      });
+    }
+    updateCartUI();
+    // Pulse feedback
+    const badge = document.getElementById('cartBadge');
+    badge.style.transform = 'scale(1.3)';
+    setTimeout(() => badge.style.transform = 'scale(1)', 150);
+  }
+
+  function updateCartUI() {
+    const totalQty = cart.reduce((s, c) => s + c.qty, 0);
+    cartBadge.textContent = totalQty;
+
+    if (!cartListContainer) return;
+
+    if (cart.length === 0) {
+      cartListContainer.innerHTML = `<div class="empty-msg"><i class="fas fa-shopping-bag" style="font-size:2rem; opacity:0.3; display:block; margin-bottom:0.5rem;"></i>Your cart is empty</div>`;
+      cartTotalDisplay.textContent = '$0.00';
+      return;
+    }
+
+    let html = '';
+    let total = 0;
+    cart.forEach((item, idx) => {
+      const line = item.prepay * item.qty;
+      total += line;
+      html += `
+        <div class="cart-row">
+          <div class="cart-row-info">
+            <span class="cart-row-name">${item.name} × ${item.qty}</span>
+            <span class="cart-row-price">${formatMoney(line)} (70%)</span>
+          </div>
+          <button class="cart-remove" data-idx="${idx}"><i class="fas fa-trash-alt"></i></button>
+        </div>`;
+    });
+    cartListContainer.innerHTML = html;
+    cartTotalDisplay.textContent = formatMoney(total);
+
+    // Remove handlers
+    document.querySelectorAll('.cart-remove').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = parseInt(btn.dataset.idx);
+        cart.splice(idx, 1);
+        updateCartUI();
+      });
+    });
+  }
+
+  // ===================== CART MODAL =====================
+  const cartModal = document.getElementById('cartModal');
+  document.getElementById('cartBtn').addEventListener('click', () => {
+    updateCartUI();
+    cartModal.classList.add('active');
+  });
+  document.getElementById('closeCartModal').addEventListener('click', () => cartModal.classList.remove('active'));
+  cartModal.addEventListener('click', (e) => { if (e.target === cartModal) cartModal.classList.remove('active'); });
+
+  // ===================== CHECKOUT (creates order) =====================
+  document.getElementById('checkoutBtn').addEventListener('click', () => {
+    if (cart.length === 0) { alert('Your cart is empty.'); return; }
+
+    const totalPrepay = cart.reduce((s, c) => s + c.prepay * c.qty, 0);
+    const itemsSummary = cart.map(c => `${c.name} ×${c.qty}`).join(', ');
+
+    const newOrder = {
+      id: 'ORD-' + Date.now(),
+      date: new Date().toISOString(),
+      items: itemsSummary,
+      totalPrepay: parseFloat(totalPrepay.toFixed(2)),
+      status: 'pending'
+    };
+
+    orders.unshift(newOrder);
+    saveOrders();
+
+    // Simulate payment confirmation
+    alert(`✅ Pre-order confirmed!\n\nItems: ${itemsSummary}\nYou pay now: ${formatMoney(totalPrepay)} (70%)\nRemaining 30% collected on delivery.\n\nThank you for choosing ORAIMO!`);
+
+    // Clear cart
+    cart = [];
+    updateCartUI();
+    cartModal.classList.remove('active');
+
+    // Refresh admin orders if visible
+    if (document.getElementById('adminView').style.display !== 'none') {
+      renderAdminOrders();
+    }
+  });
+
+  // ===================== ADMIN VIEW TOGGLE =====================
+  const storefrontView = document.getElementById('storefrontView');
+  const adminView = document.getElementById('adminView');
+  const adminBtn = document.getElementById('adminBtn');
+  const backToStoreBtn = document.getElementById('backToStoreBtn');
+
+  adminBtn.addEventListener('click', () => {
+    storefrontView.style.display = 'none';
+    adminView.style.display = 'block';
+    renderAdminProducts();
+    renderAdminOrders();
+  });
+  backToStoreBtn.addEventListener('click', () => {
+    adminView.style.display = 'none';
+    storefrontView.style.display = 'block';
+    renderStorefront();
+  });
+
+  // ===================== ADMIN TABS =====================
+  document.querySelectorAll('.admin-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.dataset.tab;
+      document.getElementById('adminProductsTab').style.display = target === 'products' ? 'block' : 'none';
+      document.getElementById('adminOrdersTab').style.display = target === 'orders' ? 'block' : 'none';
+      if (target === 'products') renderAdminProducts();
+      else renderAdminOrders();
+    });
+  });
+
+  // ===================== ADMIN: PRODUCTS CRUD =====================
+  const adminProductsBody = document.getElementById('adminProductsBody');
+
+  function renderAdminProducts() {
+    if (!adminProductsBody) return;
+    adminProductsBody.innerHTML = products.map(p => {
+      const pre = prepayPrice(p.originalPrice);
+      return `
+        <tr data-id="${p.id}">
+          <td><input type="text" value="${p.name.replace(/"/g,'&quot;')}" data-field="name" class="edit-name"></td>
+          <td><input type="number" value="${p.originalPrice}" step="0.01" min="0" data-field="price" class="edit-price"></td>
+          <td>${formatMoney(pre)}</td>
+          <td><input type="text" value="${p.icon || 'fa-box'}" data-field="icon" class="edit-icon" style="width:90px;"></td>
+          <td>
+            <button class="btn-sm save save-product" data-id="${p.id}"><i class="fas fa-save"></i></button>
+            <button class="btn-sm danger delete-product" data-id="${p.id}"><i class="fas fa-trash"></i></button>
+          </td>
+        </tr>`;
+    }).join('');
+
+    // Save individual product
+    document.querySelectorAll('.save-product').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        const row = btn.closest('tr');
+        const name = row.querySelector('.edit-name').value.trim();
+        const price = parseFloat(row.querySelector('.edit-price').value);
+        const icon = row.querySelector('.edit-icon').value.trim() || 'fa-box';
+        if (!name || isNaN(price) || price <= 0) { alert('Please enter a valid name and price.'); return; }
+        const prod = products.find(p => p.id === id);
+        if (prod) {
+          prod.name = name;
+          prod.originalPrice = price;
+          prod.icon = icon;
+          saveProducts();
+          renderAdminProducts();
+          renderStorefront(); // keep storefront in sync
+        }
+      });
+    });
+
+    // Delete product
+    document.querySelectorAll('.delete-product').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!confirm('Delete this product?')) return;
+        const id = btn.dataset.id;
+        products = products.filter(p => p.id !== id);
+        saveProducts();
+        renderAdminProducts();
+        renderStorefront();
+      });
+    });
+  }
+
+  // Add new product
+  document.getElementById('addProductBtn').addEventListener('click', () => {
+    const name = document.getElementById('newProdName').value.trim();
+    const price = parseFloat(document.getElementById('newProdPrice').value);
+    const icon = document.getElementById('newProdIcon').value.trim() || 'fa-box';
+    if (!name || isNaN(price) || price <= 0) { alert('Enter a valid product name and original price.'); return; }
+    const newProd = {
+      id: uid(),
+      name: name,
+      originalPrice: price,
+      icon: icon,
+      sub: 'oraimo quality'
+    };
+    products.push(newProd);
+    saveProducts();
+    document.getElementById('newProdName').value = '';
+    document.getElementById('newProdPrice').value = '';
+    document.getElementById('newProdIcon').value = 'fa-headphones';
+    renderAdminProducts();
+    renderStorefront();
+  });
+
+  // ===================== ADMIN: ORDERS =====================
+  const adminOrdersBody = document.getElementById('adminOrdersBody');
+
+  function renderAdminOrders() {
+    if (!adminOrdersBody) return;
+    if (orders.length === 0) {
+      adminOrdersBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--oraimo-muted); padding:1.5rem;">No orders yet.</
